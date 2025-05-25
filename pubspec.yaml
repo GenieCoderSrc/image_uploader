@@ -21,6 +21,8 @@ dependencies:
   i_tdd: ^0.0.1
   rest_api_impl: ^0.0.5
   get_it_di_global_variable: ^0.0.5
+  firebase_storage: ^12.4.6
+
 
 
 dev_dependencies:
