@@ -1,6 +1,6 @@
 name: image_uploader
 description: "A modular and extensible Dart package for uploading and deleting images using Firebase Storage or REST APIs. Built with clean architecture principles and easy-to-integrate dependency injection support."
-version: 0.0.2
+version: 0.0.3
 homepage: https://github.com/GenieCoderSrc/image_uploader
 repository: https://github.com/GenieCoderSrc/image_uploader
 issue_tracker: https://github.com/GenieCoderSrc/image_uploader/issues

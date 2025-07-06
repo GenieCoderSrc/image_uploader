@@ -1,4 +1,4 @@
-# image\_uploader
+# image_uploader
 
 `image_uploader` is a modular and extensible Dart package that simplifies file upload and deletion processes using either Firebase Storage or a REST API-based service. Built with dependency injection and clean architecture principles, this package is designed to integrate easily into your Flutter backend logic.
 
@@ -12,6 +12,7 @@
 * Extension on `Uint8List` to upload image bytes to Firebase Storage.
 * Clean separation of concerns via repositories and services.
 * Plug-and-play registration using `get_it`.
+* NEW: `BaseImageManager<T>` class for reusable upload/delete logic.
 
 ---
 
@@ -24,6 +25,12 @@ Add the following to your `pubspec.yaml`:
 ```yaml
 dependencies:
   image_uploader: <latest_version>
+```
+
+Then run:
+
+```bash
+flutter pub get
 ```
 
 ---
@@ -46,6 +53,8 @@ fileRegisterGetItDIFireStorageDataSource();
 fileRegisterGetItDiRestApiDataSource();
 ```
 
+---
+
 ### Use Cases
 
 ```dart
@@ -62,6 +71,8 @@ final fileEntity = FileEntity(
 final result = await uploadFile(fileEntity);
 ```
 
+---
+
 ### Upload Uint8List directly to Firebase
 
 ```dart
@@ -74,13 +85,39 @@ final url = await imageBytes.uploadToFirebaseStorage(
 
 ---
 
+## BaseImageManager<T>
+
+```dart
+abstract class BaseImageManager<TData> {
+  Future<Either<IFailure, bool>> upload(TData imageData);
+  Future<Either<IFailure, bool>> delete(String url);
+
+  Future<void> uploadIfAvailable({
+    required File? file,
+    required String? entityId,
+    required TData Function(File file, String entityId) dataBuilder,
+    String? successMsg,
+  });
+
+  Future<void> deleteIfAvailable({
+    required String? imageUrl,
+    String? successMsg,
+  });
+}
+```
+
+Use `BaseImageManager` to streamline conditional upload/delete operations across your apps with integrated success feedback.
+
+---
+
 ## Models
 
 ### FileEntity
 
 ```dart
 class FileEntity {
-  final File file;
+  final File? file;
+  final Uint8List? bytes;
   final String? path;
   final String? fileName;
   final String? fileType;
@@ -122,6 +159,7 @@ Implement your own `IFileRepository`, `IFireStorageService`, or `IImageServiceRe
 
 * Firebase setup (if using Firebase Storage)
 * `get_it` for dependency injection
+* `dartz`, `exception_type`, `i_tdd` for result handling and abstractions
 
 ---
 
@@ -133,4 +171,4 @@ MIT License. See `LICENSE` file for details.
 
 ## Maintainers
 
-Maintained by Shohidul Islam. Contributions welcome!
+Developed and Maintained with ❤️ by [Shohidul Islam](https://github.com/ShohidulProgrammer). Contributions welcome!

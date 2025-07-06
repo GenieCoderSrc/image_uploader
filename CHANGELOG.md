@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 
 
+## 0.0.3 – Jul 6, 2025
+
+### 🆕 Added
+
+* Introduced `BaseImageManager<TData>` abstract class to standardize image upload and delete behavior.
+    * `uploadIfAvailable(...)` – handles safe upload when file and entityId are provided.
+    * `deleteIfAvailable(...)` – handles conditional deletion if a URL is present.
+    * Uses `Either<IFailure, bool>` for clean failure handling via `i_tdd` and `exception_type`.
+    * Leverages `.handleReport()` for optional success message reporting after operations.
+
+> ✅ Designed with SOLID principles to promote reusability and simplify extending image upload logic across platforms (Firebase, REST, etc).
+
 
 ## 0.0.2
 ### Added
