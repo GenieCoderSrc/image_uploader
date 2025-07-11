@@ -1,11 +1,9 @@
+import 'dart:typed_data';
 
-import 'package:flutter/material.dart';
+class UploadFile {
+  final Uint8List bytes;
+  final String name;
+  final String mimeType;
 
-class UploadFile extends StatelessWidget {
-  const UploadFile({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const Placeholder();
-  }
+  UploadFile({required this.bytes, required this.name, required this.mimeType});
 }

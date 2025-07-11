@@ -9,7 +9,7 @@ class FileEntity extends Equatable {
 
   final String? path;
   final String? fileName;
-  final String? fileType;
+  final String? mimeType;
   final String? uploadingToastTxt;
 
   const FileEntity({
@@ -17,7 +17,7 @@ class FileEntity extends Equatable {
     this.bytes,
     this.fileName,
     this.path,
-    this.fileType = 'Images',
+    this.mimeType = 'Images',
     this.uploadingToastTxt,
   });
 
@@ -33,7 +33,7 @@ class FileEntity extends Equatable {
     bytes: bytes ?? this.bytes,
     path: collectionPath ?? path,
     fileName: fileName ?? this.fileName,
-    fileType: fileType ?? this.fileType,
+    mimeType: fileType ?? this.mimeType,
     uploadingToastTxt: uploadingToastTxt ?? this.uploadingToastTxt,
   );
 
@@ -43,7 +43,7 @@ class FileEntity extends Equatable {
     bytes,
     path,
     fileName,
-    fileType,
+    mimeType,
     uploadingToastTxt,
   ];
 
@@ -52,7 +52,7 @@ class FileEntity extends Equatable {
     'bytes': bytes,
     'path': path,
     'fileName': fileName,
-    'fileType': fileType,
+    'fileType': mimeType,
     'uploadingToastTxt': uploadingToastTxt,
   };
 }

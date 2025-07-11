@@ -29,10 +29,10 @@ class FileRepositoryRestApiDataSourceImpl extends IFileRepository {
   Future<Either<IFailure, String>> uploadFile(FileEntity fileEntity) async {
     try {
       String? imgUrl = await iFireStorageService.uploadFile(
-        fileEntity.file,
+        file: fileEntity.file,
         fileName: fileEntity.fileName,
         collectionPath: fileEntity.path,
-        fileType: fileEntity.fileType ?? 'Images',
+        fileType: fileEntity.mimeType ?? 'Images',
         uploadingToastTxt: fileEntity.uploadingToastTxt,
       );
       if (imgUrl == null) {

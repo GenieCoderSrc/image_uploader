@@ -1,4 +1,4 @@
-import 'dart:io' as io;
+import 'dart:io' ;
 import 'dart:typed_data';
 
 import 'package:dartz/dartz.dart' hide State;
@@ -6,7 +6,7 @@ import 'package:exception_type/exception_type.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-import 'package:image_picker/image_picker.dart';
+// import 'package:image_picker/image_picker.dart';
 import 'package:image_uploader/image_uploader.dart';
 
 final sl = GetIt.instance;
@@ -50,26 +50,29 @@ class _ImageUploaderExamplePageState extends State<ImageUploaderExamplePage> {
 
   Future<void> _pickAndUploadImage() async {
     final picker = ImagePicker();
-    final picked = await picker.pickImage(source: ImageSource.gallery);
+    final XFile? pickedFile = await picker.pickImage(
+      source: ImageSource.gallery,
+    );
 
-    if (picked == null) return;
+    if (pickedFile == null) return;
 
-    final Uint8List bytes = await picked.readAsBytes();
-    final io.File? file = kIsWeb ? null : io.File(picked.path);
+    final Uint8List bytes = await pickedFile.readAsBytes();
+
+
+    final File? file = kIsWeb ? null : File(pickedFile.path);
     const entityId = 'user_001';
 
-    final manager = sl<BaseImageManager<FileEntity>>();
+    final manager = sl<BaseImageManager<File>>();
 
     await manager.uploadIfAvailable(
-      file: file,
-      bytes: bytes,
+      imageData: file,
+
       entityId: entityId,
       dataBuilder:
-          (file, bytes, id) => FileEntity(
+          (file, id) => FileEntity(
             file: file,
-            bytes: bytes,
             fileName: 'avatar_${DateTime.now().millisecondsSinceEpoch}.jpg',
-            fileType: 'image',
+            mimeType: 'image',
             path: 'uploads/$id',
           ),
       successMsg: '✅ Upload successful!',
