@@ -21,7 +21,7 @@ class FileRepositoryFireStorageDataSourceImpl extends IFileRepository {
         fileType: fileEntity.mimeType ?? 'Image',
         uploadingToastTxt: fileEntity.uploadingToastTxt,
       );
-      
+
       if (imgUrl == null) {
         return const Left<FireStorageFailure, String>(
           FireStorageFailure(FireStorageFailureType.referenceNotFound),

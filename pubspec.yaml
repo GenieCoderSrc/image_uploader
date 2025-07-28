@@ -16,12 +16,19 @@ dependencies:
 
   equatable: ^2.0.7
   dartz: ^0.10.1
-  exception_type: ^0.0.3
-  fire_storage_impl: ^0.0.6
-  i_tdd: ^0.0.1
-  rest_api_impl: ^0.0.5
-  get_it_di_global_variable: ^0.0.5
   firebase_storage: ^12.4.6
+
+
+  exception_type:
+    path: ../exception_type
+  fire_storage_impl:
+    path: ../fire_storage_impl
+  i_tdd:
+    path: ../i_tdd
+  rest_api_impl:
+    path: ../rest_api_impl
+  get_it_di_global_variable:
+    path: ../get_it_di_global_variable
 
 
 
