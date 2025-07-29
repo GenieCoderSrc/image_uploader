@@ -4,7 +4,6 @@ import 'package:exception_type/exception_type.dart';
 import 'package:i_tdd/i_tdd.dart';
 import 'package:image_uploader/domain/repositories/i_repositories/i_file_repository.dart';
 
-
 class DeleteFile extends IEitherUseCase<bool, String> {
   final IFileRepository _iFileRepository;
 

@@ -1,9 +1,5 @@
-import 'package:get_it_di_global_variable/get_it_di.dart';
-import 'package:image_uploader/domain/repositories/file_repository_rest_api_data_source_impl.dart';
-import 'package:image_uploader/domain/repositories/i_repositories/i_file_repository.dart';
+import 'package:image_uploader/image_uploader.dart';
 import 'package:rest_api_impl/rest_api_impl.dart';
-
-import 'file_use_cases_register_get_it_dI.dart';
 
 void fileRegisterGetItDiRestApiDataSource() {
   // Services
@@ -18,7 +14,7 @@ void fileRegisterGetItDiRestApiDataSource() {
 
   // Repositories
   sl.registerLazySingleton<IFileRepository>(
-    () => FileRepositoryRestApiDataSourceImpl(iFireStorageService: sl()),
+    () => FileRepositoryRestApiDataSourceImpl(imageService: sl()),
   );
 
   // register use cases

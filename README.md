@@ -9,10 +9,8 @@
 * Upload files to Firebase Storage or a REST API.
 * Delete files from Firebase Storage or REST API.
 * Encapsulated `FileEntity` and `FileResponseEntity` models.
-* Extension on `Uint8List` to upload image bytes to Firebase Storage.
 * Clean separation of concerns via repositories and services.
 * Plug-and-play registration using `get_it`.
-* NEW: `BaseImageManager<T>` class for reusable upload/delete logic.
 
 ---
 
@@ -39,18 +37,18 @@ flutter pub get
 
 ### Dependency Injection Setup
 
-Choose your data source:
+Choose your data source by passing `ImageUploaderSource` enum to the `fileRegisterGetItDi()` function:
 
 #### Firebase Storage
 
 ```dart
-fileRegisterGetItDIFireStorageDataSource();
+fileRegisterGetItDi(ImageUploaderSource.firebase);
 ```
 
 #### REST API
 
 ```dart
-fileRegisterGetItDiRestApiDataSource();
+fileRegisterGetItDi(ImageUploaderSource.restApi);
 ```
 
 ---
@@ -70,43 +68,6 @@ final fileEntity = FileEntity(
 
 final result = await uploadFile(fileEntity);
 ```
-
----
-
-### Upload Uint8List directly to Firebase
-
-```dart
-final Uint8List imageBytes = ...
-final url = await imageBytes.uploadToFirebaseStorage(
-  fileName: 'image.jpg',
-  collectionPath: 'uploads',
-);
-```
-
----
-
-## BaseImageManager<T>
-
-```dart
-abstract class BaseImageManager<TData> {
-  Future<Either<IFailure, bool>> upload(TData imageData);
-  Future<Either<IFailure, bool>> delete(String url);
-
-  Future<void> uploadIfAvailable({
-    required File? file,
-    required String? entityId,
-    required TData Function(File file, String entityId) dataBuilder,
-    String? successMsg,
-  });
-
-  Future<void> deleteIfAvailable({
-    required String? imageUrl,
-    String? successMsg,
-  });
-}
-```
-
-Use `BaseImageManager` to streamline conditional upload/delete operations across your apps with integrated success feedback.
 
 ---
 
@@ -158,7 +119,6 @@ Implement your own `IFileRepository`, `IFireStorageService`, or `IImageServiceRe
 ## Requirements
 
 * Firebase setup (if using Firebase Storage)
-* `get_it` for dependency injection
 * `dartz`, `exception_type`, `i_tdd` for result handling and abstractions
 
 ---
@@ -172,6 +132,3 @@ MIT License. See `LICENSE` file for details.
 ## Maintainers
 
 Developed and Maintained with ❤️ by [Shohidul Islam](https://github.com/ShohidulProgrammer). Contributions welcome!
-# image_core
-# image_core
-# image_core

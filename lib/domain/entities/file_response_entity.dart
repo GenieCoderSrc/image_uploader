@@ -8,7 +8,9 @@ class FileResponseEntity extends Equatable {
 
   FileResponseEntity copyWith({String? fileName, String? imgUrl}) =>
       FileResponseEntity(
-          fileName: fileName ?? this.fileName, imgUrl: imgUrl ?? this.imgUrl);
+        fileName: fileName ?? this.fileName,
+        imgUrl: imgUrl ?? this.imgUrl,
+      );
 
   @override
   List<Object?> get props => [fileName, imgUrl];

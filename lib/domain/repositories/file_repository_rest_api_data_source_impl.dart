@@ -1,50 +1,73 @@
+import 'dart:io';
+
 import 'package:dartz/dartz.dart';
 import 'package:exception_type/exception_type.dart';
-import 'package:fire_storage_impl/data/data_sources/i_data_sources/i_fire_storage_service.dart';
 import 'package:flutter/foundation.dart';
+import 'package:image_core/image_core.dart';
 import 'package:image_uploader/domain/entities/file_entity.dart';
+import 'package:rest_api_impl/rest_api_impl.dart';
 
 import 'i_repositories/i_file_repository.dart';
 
 class FileRepositoryRestApiDataSourceImpl extends IFileRepository {
-  final IFireStorageService iFireStorageService;
+  final IImageServiceRestApiDataSource imageService;
 
-  FileRepositoryRestApiDataSourceImpl({required this.iFireStorageService});
+  FileRepositoryRestApiDataSourceImpl({required this.imageService});
 
   @override
-  Future<Either<IFailure, bool>> deleteFile(String imgUrl) async {
+  Future<Either<IFailure, bool>> deleteFile(String fileUrl) async {
     try {
-      bool isDeleted = await iFireStorageService.deleteFile(imgUrl: imgUrl);
-
-      return Right<IFailure, bool>(isDeleted);
-    } catch (e) {
+      final bool isDeleted = await imageService.deleteFile(endPoint: fileUrl);
+      return Right(isDeleted);
+    } catch (e, stackTrace) {
       debugPrint(
-          'FileRepositoryRestApiDataSourceImpl | deleteFile | error: $e');
-      return const Left<FireStorageFailure, bool>(
-          FireStorageFailure(FireStorageFailureType.dataParsingFailure));
+        'FileRepositoryRestApiDataSourceImpl | deleteFile | error: $e\n$stackTrace',
+      );
+      return const Left(
+        FireStorageFailure(FireStorageFailureType.dataParsingFailure),
+      );
     }
   }
 
   @override
   Future<Either<IFailure, String>> uploadFile(FileEntity fileEntity) async {
     try {
-      String? imgUrl = await iFireStorageService.uploadFile(
-        file: fileEntity.file,
-        fileName: fileEntity.fileName,
-        collectionPath: fileEntity.path,
-        fileType: fileEntity.mimeType ?? 'Images',
-        uploadingToastTxt: fileEntity.uploadingToastTxt,
-      );
-      if (imgUrl == null) {
-        return const Left<FireStorageFailure, String>(
-            FireStorageFailure(FireStorageFailureType.referenceNotFound));
+      final XFile? file = fileEntity.pickedFile;
+      final String? endPoint = fileEntity.path;
+
+      if (file == null) {
+        return const Left(DbFailure(DbFailureType.dataNotFound));
       }
-      return Right<IFailure, String>(imgUrl);
-    } catch (e) {
+
+      if (endPoint == null || endPoint.trim().isEmpty) {
+        return const Left(DbFailure(DbFailureType.invalidData));
+      }
+
+      final String? uploadedUrl = await imageService.uploadFile(
+        file: file,
+        endPoint: endPoint,
+        fileName: fileEntity.fileName,
+        queryParams: {},
+        // or fileEntity.queryParams if you add support
+        imgFieldName: 'image',
+        urlFieldName: 'url',
+        accessToken: null, // or fileEntity.accessToken if supported
+      );
+
+      if (uploadedUrl == null) {
+        return const Left(
+          FireStorageFailure(FireStorageFailureType.referenceNotFound),
+        );
+      }
+
+      return Right(uploadedUrl);
+    } catch (e, stackTrace) {
       debugPrint(
-          'FileRepositoryRestApiDataSourceImpl | uploadFile | error: $e');
-      return const Left<FireStorageFailure, String>(
-          FireStorageFailure(FireStorageFailureType.dataParsingFailure));
+        'FileRepositoryRestApiDataSourceImpl | uploadFile | error: $e\n$stackTrace',
+      );
+      return const Left(
+        FireStorageFailure(FireStorageFailureType.dataParsingFailure),
+      );
     }
   }
 }

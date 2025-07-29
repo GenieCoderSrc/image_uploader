@@ -1,7 +1,8 @@
 import 'package:dartz/dartz.dart';
 import 'package:exception_type/exception_type.dart';
-import 'package:fire_storage_impl/data/data_sources/i_data_sources/i_fire_storage_service.dart';
+import 'package:fire_storage_impl/fire_storage_impl.dart';
 import 'package:flutter/foundation.dart';
+import 'package:image_core/image_core.dart';
 import 'package:image_uploader/domain/entities/file_entity.dart';
 
 import 'i_repositories/i_file_repository.dart';
@@ -14,12 +15,20 @@ class FileRepositoryFireStorageDataSourceImpl extends IFileRepository {
   @override
   Future<Either<IFailure, String>> uploadFile(FileEntity fileEntity) async {
     try {
+      UploadFile? uploadFile = await fileEntity.pickedFile
+          ?.toUploadFileFromXFile(
+            fileName: fileEntity.fileName,
+            collectionPath: fileEntity.path,
+            uploadingToastTxt: fileEntity.uploadingToastTxt,
+          );
+
+      if (uploadFile == null) {
+        return const Left<DbFailure, String>(
+          DbFailure(DbFailureType.dataNotFound),
+        );
+      }
       String? imgUrl = await iFireStorageService.uploadFile(
-        file: fileEntity.file,
-        fileName: fileEntity.fileName,
-        collectionPath: fileEntity.path,
-        fileType: fileEntity.mimeType ?? 'Image',
-        uploadingToastTxt: fileEntity.uploadingToastTxt,
+        uploadFile: uploadFile,
       );
 
       if (imgUrl == null) {

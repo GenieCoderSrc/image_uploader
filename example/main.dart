@@ -1,144 +1,126 @@
-import 'dart:io' ;
-import 'dart:typed_data';
+import 'dart:io';
 
-import 'package:dartz/dartz.dart' hide State;
-import 'package:exception_type/exception_type.dart';
-import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
-import 'package:get_it/get_it.dart';
-// import 'package:image_picker/image_picker.dart';
+
 import 'package:image_uploader/image_uploader.dart';
 
-final sl = GetIt.instance;
-
 void main() {
-  WidgetsFlutterBinding.ensureInitialized();
+  registerImageUploaderGetItDi(
+    dataSourceType: DataSourceType.firebaseStorage,
+  ); // Or restApi
 
-  // Choose one:
-  fileRegisterGetItDIFireStorageDataSource();
-  // fileRegisterGetItDiRestApiDataSource();
-
-  sl.registerSingleton<BaseImageManager<FileEntity>>(
-    ExampleImageManager(
-      uploadFile: sl<UploadFile>(),
-      deleteFile: sl<DeleteFile>(),
-    ),
-  );
-
-  runApp(const MyApp());
+  runApp(const FileExampleApp());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class FileExampleApp extends StatelessWidget {
+  const FileExampleApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(home: ImageUploaderExamplePage());
+    return MaterialApp(home: FileUploadDeleteDemo());
   }
 }
 
-class ImageUploaderExamplePage extends StatefulWidget {
-  const ImageUploaderExamplePage({super.key});
+class FileUploadDeleteDemo extends StatefulWidget {
+  const FileUploadDeleteDemo({super.key});
 
   @override
-  State<ImageUploaderExamplePage> createState() =>
-      _ImageUploaderExamplePageState();
+  State<FileUploadDeleteDemo> createState() => _FileUploadDeleteDemoState();
 }
 
-class _ImageUploaderExamplePageState extends State<ImageUploaderExamplePage> {
+class _FileUploadDeleteDemoState extends State<FileUploadDeleteDemo> {
   String? uploadedUrl;
+  bool isLoading = false;
+  String result = '';
 
-  Future<void> _pickAndUploadImage() async {
-    final picker = ImagePicker();
-    final XFile? pickedFile = await picker.pickImage(
-      source: ImageSource.gallery,
+  Future<void> _uploadSampleFile() async {
+    setState(() {
+      isLoading = true;
+      result = 'Uploading...';
+    });
+
+    // Use a sample file from local system or mock during test
+    final sampleFile = File('assets/sample_image.jpg'); // Ensure this exists
+    final xFile = XFile(sampleFile.path); // Ensure this exists
+
+    final fileEntity = FileEntity(
+      pickedFile: xFile,
+      path: '/upload/images',
+      fileName: 'sample_image.jpg',
+      mimeType: 'image/jpeg',
+      uploadingToastTxt: 'Uploading image...',
+      queryParams: {'folder': 'test_images'},
+      imgFieldName: 'image',
+      urlFieldName: 'url',
+      accessToken: null,
     );
 
-    if (pickedFile == null) return;
+    final uploadFileUseCase = sl<UploadFile>();
+    final response = await uploadFileUseCase(fileEntity);
 
-    final Uint8List bytes = await pickedFile.readAsBytes();
-
-
-    final File? file = kIsWeb ? null : File(pickedFile.path);
-    const entityId = 'user_001';
-
-    final manager = sl<BaseImageManager<File>>();
-
-    await manager.uploadIfAvailable(
-      imageData: file,
-
-      entityId: entityId,
-      dataBuilder:
-          (file, id) => FileEntity(
-            file: file,
-            fileName: 'avatar_${DateTime.now().millisecondsSinceEpoch}.jpg',
-            mimeType: 'image',
-            path: 'uploads/$id',
-          ),
-      successMsg: '✅ Upload successful!',
-    );
-
-    setState(() => uploadedUrl = 'uploads/$entityId/avatar.jpg');
+    setState(() {
+      isLoading = false;
+      response.fold(
+        (failure) => result = 'Upload failed: ${failure.toString()}',
+        (url) {
+          uploadedUrl = url;
+          result = 'Upload successful! URL: $url';
+        },
+      );
+    });
   }
 
-  Future<void> _deleteImage() async {
-    if (uploadedUrl == null) return;
+  Future<void> _deleteUploadedFile() async {
+    if (uploadedUrl == null) {
+      setState(() => result = 'No file uploaded to delete.');
+      return;
+    }
 
-    final manager = sl<BaseImageManager<FileEntity>>();
-    await manager.deleteIfAvailable(
-      imageUrl: uploadedUrl,
-      successMsg: '🗑️ Image deleted',
-    );
+    setState(() {
+      isLoading = true;
+      result = 'Deleting...';
+    });
 
-    setState(() => uploadedUrl = null);
+    final deleteFileUseCase = sl<DeleteFile>();
+    final response = await deleteFileUseCase(uploadedUrl!);
+
+    setState(() {
+      isLoading = false;
+      response.fold(
+        (failure) => result = 'Delete failed: ${failure.toString()}',
+        (success) {
+          uploadedUrl = null;
+          result = success ? 'Delete successful!' : 'Delete failed.';
+        },
+      );
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('image_uploader Example')),
-      body: Center(
+      appBar: AppBar(title: const Text('File Upload & Delete Example')),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            ElevatedButton(
-              onPressed: _pickAndUploadImage,
-              child: const Text('Pick & Upload Image'),
+            ElevatedButton.icon(
+              onPressed: isLoading ? null : _uploadSampleFile,
+              icon: const Icon(Icons.upload),
+              label: const Text('Upload File'),
             ),
             const SizedBox(height: 16),
-            if (uploadedUrl != null) ...[
-              const Text('Uploaded:'),
-              SelectableText(uploadedUrl!),
-              const SizedBox(height: 8),
-              ElevatedButton(
-                onPressed: _deleteImage,
-                child: const Text('Delete Image'),
-              ),
-            ],
+            ElevatedButton.icon(
+              onPressed: isLoading ? null : _deleteUploadedFile,
+              icon: const Icon(Icons.delete),
+              label: const Text('Delete Uploaded File'),
+            ),
+            const SizedBox(height: 24),
+            if (isLoading) const CircularProgressIndicator(),
+            if (!isLoading) Text(result),
           ],
         ),
       ),
     );
-  }
-}
-
-class ExampleImageManager extends BaseImageManager<FileEntity> {
-  final UploadFile uploadFile;
-  final DeleteFile deleteFile;
-
-  ExampleImageManager({required this.uploadFile, required this.deleteFile});
-
-  @override
-  Future<Either<IFailure, bool>> upload(FileEntity imageData) async {
-    final result = await uploadFile(imageData);
-    return result.fold((failure) => Left(failure), (url) {
-      debugPrint('✅ Uploaded to: $url');
-      return const Right(true);
-    });
-  }
-
-  @override
-  Future<Either<IFailure, bool>> delete(String url) {
-    return deleteFile(url);
   }
 }
