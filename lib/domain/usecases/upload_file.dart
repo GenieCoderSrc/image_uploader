@@ -1,3 +1,4 @@
+import 'package:dartz/dartz.dart';
 import 'package:exception_type/exception_type.dart';
 import 'package:i_tdd/i_tdd.dart';
 import 'package:image_uploader/domain/entities/file_entity.dart';
