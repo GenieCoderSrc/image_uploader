@@ -19,9 +19,9 @@ dependencies:
   exception_type: ^0.0.3
   fire_storage_impl: ^0.0.8
   i_tdd: ^0.0.2
-  rest_api_impl: ^0.0.5
+  rest_api_impl: ^0.0.6
   get_it_di_global_variable: ^0.0.5
-  image_core: ^0.0.3
+  image_core: ^0.0.4
 
 
   equatable: ^2.0.7
