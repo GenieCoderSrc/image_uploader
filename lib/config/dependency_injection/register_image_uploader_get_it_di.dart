@@ -1,4 +1,3 @@
-import 'package:image_uploader/enums/data_source_type.dart';
 import 'package:image_uploader/image_uploader.dart';
 
 /// Register file/image uploader dependencies based on selected source type

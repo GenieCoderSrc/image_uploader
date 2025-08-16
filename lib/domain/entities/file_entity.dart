@@ -31,7 +31,7 @@ class FileEntity extends Equatable {
   });
 
   FileEntity copyWith({
-    XFile? file,
+    XFile? pickedFile,
     Uint8List? bytes,
     String? path,
     String? fileName,
@@ -42,7 +42,7 @@ class FileEntity extends Equatable {
     String? urlFieldName,
     String? accessToken,
   }) => FileEntity(
-    pickedFile: file ?? this.pickedFile,
+    pickedFile: pickedFile ?? this.pickedFile,
     bytes: bytes ?? this.bytes,
     path: path ?? this.path,
     fileName: fileName ?? this.fileName,
