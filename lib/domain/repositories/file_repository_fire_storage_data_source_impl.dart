@@ -15,28 +15,26 @@ class FileRepositoryFireStorageDataSourceImpl extends IFileRepository {
   @override
   Future<Either<IFailure, String>> uploadFile(FileEntity fileEntity) async {
     try {
-      UploadFile? uploadFile = await fileEntity.pickedFile
-          ?.toUploadFileFromXFile(
-            fileName: fileEntity.fileName,
-            collectionPath: fileEntity.path,
-            uploadingToastTxt: fileEntity.uploadingToastTxt,
-          );
+      final XFile? file = fileEntity.pickedFile;
 
-      if (uploadFile == null) {
+      if (file == null) {
         return const Left<DbFailure, String>(
           DbFailure(DbFailureType.dataNotFound),
         );
       }
-      String? imgUrl = await iFireStorageService.uploadFile(
-        uploadFile: uploadFile,
+      String? fileUrl = await iFireStorageService.uploadFile(
+        file: file,
+        fileName: fileEntity.fileName,
+        collectionPath: fileEntity.path,
+        uploadingToastTxt: fileEntity.uploadingToastTxt,
       );
 
-      if (imgUrl == null) {
+      if (fileUrl == null) {
         return const Left<FireStorageFailure, String>(
           FireStorageFailure(FireStorageFailureType.referenceNotFound),
         );
       }
-      return Right<IFailure, String>(imgUrl);
+      return Right<IFailure, String>(fileUrl);
     } catch (e) {
       debugPrint(
         'FileRepositoryFireStorageDataSourceImpl | uploadFile | error: $e',
@@ -48,9 +46,9 @@ class FileRepositoryFireStorageDataSourceImpl extends IFileRepository {
   }
 
   @override
-  Future<Either<IFailure, bool>> deleteFile(String imgUrl) async {
+  Future<Either<IFailure, bool>> deleteFile(String fileUrl) async {
     try {
-      bool isDeleted = await iFireStorageService.deleteFile(imgUrl: imgUrl);
+      bool isDeleted = await iFireStorageService.deleteFile(fileUrl: fileUrl);
 
       return Right<IFailure, bool>(isDeleted);
     } catch (e) {
