@@ -4,6 +4,15 @@ All notable changes to this project will be documented in this file.
 
 ---
 
+## 0.0.5
+
+### Aug 17, 2025
+
+### ✨ Updated
+
+- Updated `fire_storage_impl` package
+
+
 ## 0.0.4
 ### Jul 29, 2025
 
