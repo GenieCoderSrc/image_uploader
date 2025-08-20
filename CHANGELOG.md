@@ -4,6 +4,19 @@ All notable changes to this project will be documented in this file.
 
 ---
 
+## 0.0.6
+
+### Aug 22, 2025
+
+### ✨ Updated
+
+- Updated Dart sdk to 3.9.0
+- Updated `rest_api_impl` to 0.0.7
+- Updated `fire_storage_impl` to 0.1.0
+- Removed `flutter_lints` Dependency
+- Removed `image_core` dependency
+
+
 ## 0.0.5
 
 ### Aug 17, 2025

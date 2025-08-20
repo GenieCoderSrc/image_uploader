@@ -1,7 +1,7 @@
+import 'package:cross_file/cross_file.dart';
 import 'package:dartz/dartz.dart';
 import 'package:exception_type/exception_type.dart';
 import 'package:flutter/foundation.dart';
-import 'package:image_core/image_core.dart';
 import 'package:image_uploader/domain/entities/file_entity.dart';
 import 'package:rest_api_impl/rest_api_impl.dart';
 
