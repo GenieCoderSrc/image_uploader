@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 
 ---
 
+## 0.0.7
+
+### Sep 8, 2025
+
+### ✨ Updated
+
+- Updated `fire_storage_impl` to 0.1.1
+
 ## 0.0.6
 
 ### Aug 22, 2025
@@ -16,7 +24,6 @@ All notable changes to this project will be documented in this file.
 - Removed `flutter_lints` Dependency
 - Removed `image_core` dependency
 
-
 ## 0.0.5
 
 ### Aug 17, 2025
@@ -25,16 +32,18 @@ All notable changes to this project will be documented in this file.
 
 - Updated `fire_storage_impl` package
 
-
 ## 0.0.4
+
 ### Jul 29, 2025
 
 ### 🔧 Changed
 
-* Removed all implementation layers except the domain layer for file/image handling to improve decoupling and testability.
-* Centralized registration of image upload data source using `registerImageUploaderGetItDi()` with enum `FileUploaderSourceType`.
+* Removed all implementation layers except the domain layer for file/image handling to improve decoupling and
+  testability.
+* Centralized registration of image upload data source using `registerImageUploaderGetItDi()` with enum
+  `FileUploaderSourceType`.
 
-  * Enables switching between `restApi` and `firebaseStorage` easily.
+    * Enables switching between `restApi` and `firebaseStorage` easily.
 
 ### 🆕 Added
 
@@ -45,19 +54,21 @@ All notable changes to this project will be documented in this file.
 
 ---
 
-## 0.0.3  
+## 0.0.3
+
 ### Jul 6, 2025
 
 ### 🆕 Added
 
 * Introduced `BaseImageManager<TData>` abstract class to standardize image upload and delete behavior.
 
-  * `uploadIfAvailable(...)` – handles safe upload when file and entityId are provided.
-  * `deleteIfAvailable(...)` – handles conditional deletion if a URL is present.
-  * Uses `Either<IFailure, bool>` for clean failure handling via `i_tdd` and `exception_type`.
-  * Leverages `.handleReport()` for optional success message reporting after operations.
+    * `uploadIfAvailable(...)` – handles safe upload when file and entityId are provided.
+    * `deleteIfAvailable(...)` – handles conditional deletion if a URL is present.
+    * Uses `Either<IFailure, bool>` for clean failure handling via `i_tdd` and `exception_type`.
+    * Leverages `.handleReport()` for optional success message reporting after operations.
 
-> ✅ Designed with SOLID principles to promote reusability and simplify extending image upload logic across platforms (Firebase, REST, etc).
+> ✅ Designed with SOLID principles to promote reusability and simplify extending image upload logic across platforms (
+> Firebase, REST, etc).
 
 ---
 
