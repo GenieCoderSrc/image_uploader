@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## 0.0.8
+
+### Jun 15, 2026
+
+### ✨ Updated
+
+- Updated `rest_api_impl` to ^0.0.8
+
 
 
 ---
