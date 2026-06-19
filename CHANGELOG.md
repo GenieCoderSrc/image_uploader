@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file.
 
-## 0.0.8
+## 0.0.9
 
 ### Jun 15, 2026
 
@@ -10,7 +10,15 @@ All notable changes to this project will be documented in this file.
 
 - Updated `rest_api_impl` to ^0.0.8
 
+---
 
+## 0.0.8
+
+### Jun 15, 2026
+
+### ✨ Updated
+
+- Updated `rest_api_impl` to ^0.0.8
 
 ---
 
@@ -21,6 +29,8 @@ All notable changes to this project will be documented in this file.
 ### ✨ Updated
 
 - Updated `fire_storage_impl` to 0.1.1
+
+---
 
 ## 0.0.6
 
@@ -34,6 +44,8 @@ All notable changes to this project will be documented in this file.
 - Removed `flutter_lints` Dependency
 - Removed `image_core` dependency
 
+---
+
 ## 0.0.5
 
 ### Aug 17, 2025
@@ -41,6 +53,8 @@ All notable changes to this project will be documented in this file.
 ### ✨ Updated
 
 - Updated `fire_storage_impl` package
+
+---
 
 ## 0.0.4
 
