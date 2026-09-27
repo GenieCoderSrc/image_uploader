@@ -16,11 +16,11 @@ dependencies:
 
   
 
-  exception_type: ^0.0.5
-  fire_storage_impl: ^0.1.3
-  rest_api_impl: ^0.0.9+1
+  exception_type: ^0.0.6
+  fire_storage_impl: ^0.1.4
+  rest_api_impl: ^0.1.0
   get_it_di_global_variable: ^0.0.8
-  i_tdd: ^0.0.4
+  i_tdd: ^0.0.5
 
 
   equatable: ^3.0.0
