@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+## 0.1.0
+
+### Sep 26, 2026
+
+### ✨ Updated
+
+- Updated `equatable` to ^3.0.0
+- Updated `dartz` to ^0.10.1
+- Updated `cross_file` to ^0.4.0
+
 ## 0.0.9+1
 
 ### Aug 10, 2026
