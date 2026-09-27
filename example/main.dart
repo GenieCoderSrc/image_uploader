@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-
 import 'package:image_uploader/image_uploader.dart';
 
 void main() {
@@ -41,7 +40,7 @@ class _FileUploadDeleteDemoState extends State<FileUploadDeleteDemo> {
 
     // Use a sample file from local system or mock during test
     final sampleFile = File('assets/sample_image.jpg'); // Ensure this exists
-    final xFile = XFile(sampleFile.path); // Ensure this exists
+    final xFile = XFile.fileSystem(path: sampleFile.path); // Ensure this exists
 
     final fileEntity = FileEntity(
       pickedFile: xFile,
