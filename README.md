@@ -21,6 +21,8 @@
 Add the following to your `pubspec.yaml`:
 
 ```yaml
+resolution: workspace
+
 dependencies:
   image_uploader: <latest_version>
 ```

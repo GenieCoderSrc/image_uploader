@@ -8,7 +8,9 @@ issue_tracker: https://github.com/GenieCoderSrc/image_uploader/issues
 
 environment:
   sdk: '>=3.6.0 <4.0.0'
-resolution: workspace # <-- Required for Melos 8 & Pub Workspaces
+
+
+resolution: workspace
 
 dependencies:
   flutter:
@@ -25,7 +27,7 @@ dependencies:
 
   equatable: ^3.0.0
   dartz: ^0.10.1
-  cross_file: ^0.4.0
+  cross_file: ^0.3.5+2
 
 
 
